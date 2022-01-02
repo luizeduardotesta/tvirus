@@ -1,0 +1,21 @@
+defmodule Tvirus.Player.Survivor do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "survivors" do
+    field :age, :integer
+    field :gender, :string
+    field :infected, :boolean, default: false
+    field :name, :string
+
+    timestamps()
+  end
+
+  @doc false
+  def changeset(survivor, attrs) do
+    survivor
+    |> cast(attrs, [:name, :age, :gender, :infected])
+    |> validate_required([:name, :age, :gender])
+    |> validate_number(:age, greater_than_or_equal_to: 18)
+  end
+end

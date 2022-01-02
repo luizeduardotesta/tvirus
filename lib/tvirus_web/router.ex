@@ -7,6 +7,8 @@ defmodule TvirusWeb.Router do
 
   scope "/api", TvirusWeb do
     pipe_through :api
+
+    resources "/survivors", SurvivorController, only: [:create, :show, :update, :index, :delete]
   end
 
   # Enables LiveDashboard only for development
