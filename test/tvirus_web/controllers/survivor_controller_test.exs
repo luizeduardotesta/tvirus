@@ -26,6 +26,10 @@ defmodule TvirusWeb.SurvivorControllerTest do
       assert subject["gender"] == params.gender
       assert subject["infected"] == params.infected
       assert subject["id"] != nil
+
+      assert last_location = subject["last_location"]
+      assert last_location["latitude"] == params.latitude
+      assert last_location["longitude"] == params.longitude
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -36,34 +40,18 @@ defmodule TvirusWeb.SurvivorControllerTest do
     end
   end
 
-  describe "update survivor" do
+  describe "update last_location" do
     setup [:create_survivor]
 
-    test "renders survivor when data is valid", %{conn: conn, survivor: survivor} do
-      params = %{age: survivor.age}
-      conn = put(conn, Routes.survivor_path(conn, :update, survivor), survivor: params)
+    test "update last_location when valid data", %{conn: conn, survivor: survivor} do
+      params = %{latitude: "22.55", longitude: "67.11"}
 
-      assert expected = json_response(conn, 200)["data"]
-      assert expected["age"] == params.age
-    end
+      conn = put(conn, Routes.survivor_path(conn, :update, survivor.id), last_location: params)
 
-    test "renders errors when data is invalid", %{conn: conn, survivor: survivor} do
-      params = %{name: nil}
-      conn = put(conn, Routes.survivor_path(conn, :update, survivor), survivor: params)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
-
-  describe "delete survivor" do
-    setup [:create_survivor]
-
-    test "deletes chosen survivor", %{conn: conn, survivor: survivor} do
-      conn = delete(conn, Routes.survivor_path(conn, :delete, survivor))
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
-        get(conn, Routes.survivor_path(conn, :show, survivor))
-      end
+      assert subject = json_response(conn, 200)["data"]
+      assert last_location = subject["last_location"]
+      assert last_location["latitude"] == params.latitude
+      assert last_location["longitude"] == params.longitude
     end
   end
 

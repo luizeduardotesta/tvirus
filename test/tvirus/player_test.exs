@@ -8,7 +8,7 @@ defmodule Tvirus.PlayerTest do
   describe "survivors" do
     alias Tvirus.Player.Survivor
 
-    @invalid_attrs %{age: nil, gender: nil, infected: nil, name: nil}
+    @invalid_attrs %{age: nil, gender: nil, infected: nil, name: nil, latitude: nil, longitude: nil}
 
     test "list_survivors/0 returns all survivors" do
       survivor = insert(:survivor)
@@ -36,13 +36,22 @@ defmodule Tvirus.PlayerTest do
 
     test "update_survivor/2 with valid data updates the survivor" do
       survivor = insert(:survivor)
-      update_attrs = %{age: 43, gender: "some updated gender", infected: false, name: "some updated name"}
+      updated = params_for(:survivor, %{
+        age: 21,
+        gender: "female",
+        infected: true,
+        name: "Angel",
+        latitude: "24.98",
+        longitude: "94.32"
+      })
 
-      assert {:ok, %Survivor{} = survivor} = Player.update_survivor(survivor, update_attrs)
-      assert survivor.age == 43
-      assert survivor.gender == "some updated gender"
-      assert survivor.infected == false
-      assert survivor.name == "some updated name"
+      assert {:ok, %Survivor{} = survivor} = Player.update_survivor(survivor, updated)
+      assert survivor.age == updated.age
+      assert survivor.gender == updated.gender
+      assert survivor.infected == updated.infected
+      assert survivor.name == updated.name
+      assert survivor.latitude == updated.latitude
+      assert survivor.longitude == updated.longitude
     end
 
     test "update_survivor/2 with invalid data returns error changeset" do

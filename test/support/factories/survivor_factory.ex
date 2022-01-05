@@ -6,7 +6,9 @@ defmodule Tvirus.SurvivorFactory do
           name: "Zé",
           age: 18,
           gender: "male",
-          infected: false
+          infected: false,
+          latitude: "15.75",
+          longitude: "32.95"
         }
       end
     end

@@ -25,19 +25,10 @@ defmodule TvirusWeb.SurvivorController do
     render(conn, "show.json", survivor: survivor)
   end
 
-  def update(conn, %{"id" => id, "survivor" => survivor_params}) do
-    survivor = Player.get_survivor!(id)
-
-    with {:ok, %Survivor{} = survivor} <- Player.update_survivor(survivor, survivor_params) do
+  def update(conn, %{ "id" => id, "last_location" => last_location}) do
+    with survivor <- Player.get_survivor(id),
+         {:ok, %Survivor{} = survivor} <- Player.update_survivor(survivor, last_location) do
       render(conn, "show.json", survivor: survivor)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    survivor = Player.get_survivor!(id)
-
-    with {:ok, %Survivor{}} <- Player.delete_survivor(survivor) do
-      send_resp(conn, :no_content, "")
     end
   end
 end

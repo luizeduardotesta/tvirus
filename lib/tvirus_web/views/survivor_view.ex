@@ -16,7 +16,11 @@ defmodule TvirusWeb.SurvivorView do
       name: survivor.name,
       age: survivor.age,
       gender: survivor.gender,
-      infected: survivor.infected
+      infected: survivor.infected,
+      last_location: %{
+        latitude: survivor.latitude,
+        longitude: survivor.longitude
+      }
     }
   end
 end
