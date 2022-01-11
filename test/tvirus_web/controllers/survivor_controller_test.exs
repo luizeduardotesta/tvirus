@@ -55,6 +55,32 @@ defmodule TvirusWeb.SurvivorControllerTest do
     end
   end
 
+  describe "update infected" do
+    setup [:create_survivor]
+
+    test "update infected when 5 susrvivors flaged", %{conn: conn, survivor: survivor} do
+      params = %{flager_id: insert(:survivor).id}
+      flag = MapSet.new([survivor.id, insert(:survivor).id, insert(:survivor).id, insert(:survivor).id])
+      flaged = insert(:survivor, %{flag: flag, infected: false})
+
+      conn = put(conn, Routes.survivor_path(conn, :update, flaged.id), params)
+
+      assert subject = json_response(conn, 200)["data"]
+      assert subject["infected"] == true
+      assert subject["id"] == flaged.id
+    end
+
+    test "fail to update infected when alredy flaged", %{conn: conn, survivor: survivor} do
+      params = %{flager_id: survivor.id}
+      flag = MapSet.new([survivor.id])
+      flaged = insert(:survivor, %{flag: flag, infected: false})
+
+      conn = put(conn, Routes.survivor_path(conn, :update, flaged.id), params)
+
+      assert "this guy is alredy flaged by you" = json_response(conn, 400)["error"]
+    end
+  end
+
   defp create_survivor(_) do
     survivor = insert(:survivor)
     %{survivor: survivor}

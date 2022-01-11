@@ -26,8 +26,16 @@ defmodule TvirusWeb.SurvivorController do
   end
 
   def update(conn, %{ "id" => id, "last_location" => last_location}) do
-    with survivor <- Player.get_survivor(id),
+    with %Survivor{} = survivor <- Player.get_survivor(id),
          {:ok, %Survivor{} = survivor} <- Player.update_survivor(survivor, last_location) do
+      render(conn, "show.json", survivor: survivor)
+    end
+  end
+
+  def update(conn, %{"id" => id, "flager_id" => flager_id}) do
+    with %Survivor{} = survivor <- Player.get_survivor(id),
+      %Survivor{} = flager <- Player.get_survivor(flager_id),
+        {:ok, survivor} <- Player.flag_infection(survivor, flager) do
       render(conn, "show.json", survivor: survivor)
     end
   end

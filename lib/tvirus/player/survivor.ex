@@ -9,6 +9,7 @@ defmodule Tvirus.Player.Survivor do
     field :name, :string
     field :latitude, :string
     field :longitude, :string
+    field :flag, EctoMapSet, of: :integer, default: MapSet.new
 
     timestamps()
   end

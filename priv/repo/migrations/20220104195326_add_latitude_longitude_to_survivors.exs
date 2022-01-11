@@ -6,6 +6,5 @@ defmodule Tvirus.Repo.Migrations.AddLatitudeLongitudeToSurvivors do
       add :latitude, :string
       add :longitude, :string
     end
-
   end
 end

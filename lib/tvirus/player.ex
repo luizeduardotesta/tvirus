@@ -104,4 +104,21 @@ defmodule Tvirus.Player do
   def change_survivor(%Survivor{} = survivor, attrs \\ %{}) do
     Survivor.changeset(survivor, attrs)
   end
+
+  def flag_infection(survivor, flager) do
+    flag =
+      survivor.flag
+      |> MapSet.put(flager.id)
+
+    cond do
+      MapSet.size(flag) >= 5 ->
+        update_survivor(survivor, %{flag: flag, infected: true})
+
+      survivor.flag == flag ->
+        {:error, :already_flag}
+
+      true ->
+        update_survivor(survivor, %{flag: flag})
+    end
+  end
 end

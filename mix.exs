@@ -44,7 +44,8 @@ defmodule Tvirus.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:ex_machina, "~> 2.7.0"}
+      {:ex_machina, "~> 2.7.0"},
+      {:ecto_map_set, "~> 0.2.1"}
     ]
   end
 

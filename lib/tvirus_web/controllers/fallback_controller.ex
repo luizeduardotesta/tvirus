@@ -21,4 +21,10 @@ defmodule TvirusWeb.FallbackController do
     |> put_view(TvirusWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :already_flag}) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{error: "this guy is alredy flaged by you"})
+  end
 end
